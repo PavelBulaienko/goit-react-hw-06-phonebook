@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+.App {
+  font-family: 'Roboto', sans-serif;
+}
+.form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 200px;
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+.nameLabel {
+  margin-bottom: 5px;
+}
+.nameInput {
+  margin-bottom: 20px;
+}
+.numberInput {
+  margin-bottom: 20px;
+}
+.item {
+  margin-bottom: 20px;
+}
