@@ -1,15 +1,17 @@
 import { Component } from 'react';
-import Contacts from './Contacts';
+// import Contacts from './Contacts';
 import shortid from 'shortid';
+import { connect } from 'react-redux';
+import * as actions from '../redux/actions';
 
 class Phonebook extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    // contacts: [
+    //   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+    //   { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+    //   { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+    //   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    // ],
     filter: [],
     name: '',
     number: '',
@@ -20,13 +22,15 @@ class Phonebook extends Component {
   }
 
   componentDidUpdate() {
-    localStorage.setItem('contacts', JSON.stringify(this.state));
+    // localStorage.setItem('contacts', JSON.stringify(this.state));
+    localStorage.setItem('contacts', JSON.stringify(this.props.contacts));
   }
 
   nameCheking = () => {
     let filteredContacts = [];
-    const { contacts, filter } = this.state;
-    contacts.forEach((contact) => {
+    // const { contacts, filter } = this.state;
+    const { filter } = this.state;
+    this.props.contacts.forEach((contact) => {
       filter.forEach((filterItem) => {
         if (contact.name === filterItem) {
           filteredContacts.push(contact);
@@ -34,7 +38,7 @@ class Phonebook extends Component {
       });
     });
     if (filter.length === 0) {
-      filteredContacts = contacts;
+      filteredContacts = this.props.contacts;
     }
 
     return filteredContacts;
@@ -112,7 +116,16 @@ class Phonebook extends Component {
             onChange={this.handleInputContact}
             className="numberInput"
           />
-          <button type="submit" onClick={this.handleAddContact}>
+          <button
+            type="submit"
+            onClick={() =>
+              this.props.addContact({
+                name: this.state.name,
+                id: shortid.generate(),
+                number: this.state.number,
+              })
+            }
+          >
             Add contact
           </button>
         </form>
@@ -126,9 +139,18 @@ class Phonebook extends Component {
           onChange={this.handleInputFilter}
           className="nameFilter"
         />
-        <Contacts contacts={this.nameCheking()} handleDelete={this.handleDelete} />
+        {/* <Contacts contacts={this.nameCheking()} handleDelete={this.props.deleteContact} /> */}
+        {/* <Contacts contacts={this.props.contacts} handleDelete={this.props.deleteContact} /> */}
       </>
     );
   }
 }
-export default Phonebook;
+
+const mapStateToProps = (state) => ({ contacts: state });
+
+const mapDispatchToProps = (dispatch) => ({
+  addContact: (contact) => dispatch(actions.addContact(contact)),
+  deleteContact: (contact) => dispatch(actions.deleteContact(contact)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Phonebook);
