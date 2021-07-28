@@ -7,3 +7,8 @@ export const deleteContact = (contactId) => ({
   type: 'phonebook/DeleteContact',
   payload: contactId,
 });
+
+export const updateSessionContact = (contacts) => ({
+  type: 'phonebook/UpdateContacts',
+  payload: contacts,
+});

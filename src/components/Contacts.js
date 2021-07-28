@@ -1,17 +1,26 @@
-import React from 'react';
+import { React } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../redux/actions';
 
-const Contacts = ({ contacts, handleDelete }) => (
+const Contacts = ({ contacts, deleteContact }) => (
   <ul className="nameList">
-    {contacts.map((contact) => (
-      <li key={contact.id} className="item">
+    {contacts.items.map(({ id, name, number }) => (
+      <li key={id} className="item">
         <p className="name">
-          {contact.name}: {contact.number}
+          {name}: {number}
         </p>
-        <button type="button" onClick={handleDelete(contact.id)}>
+        <button type="button" onClick={() => deleteContact(id)}>
           Delete
         </button>
       </li>
     ))}
   </ul>
 );
-export default Contacts;
+
+const mapStateToProps = (state) => ({ contacts: state });
+
+const mapDispatchToProps = (dispatch) => ({
+  deleteContact: (contactID) => dispatch(actions.deleteContact(contactID)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Contacts);
