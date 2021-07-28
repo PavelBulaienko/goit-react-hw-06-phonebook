@@ -7,7 +7,6 @@ import * as actions from '../redux/actions';
 
 class Phonebook extends Component {
   state = {
-    // filter: [],
     name: '',
     number: '',
   };
@@ -33,7 +32,7 @@ class Phonebook extends Component {
     const filteredNames = names.filter((name) =>
       name.toLowerCase().includes(e.target.value.toLowerCase()),
     );
-    this.setState({ filter: filteredNames });
+    this.props.filterContacts(filteredNames);
   };
 
   render() {
@@ -83,14 +82,14 @@ class Phonebook extends Component {
           onChange={this.handleInputFilter}
           className="nameFilter"
         />
-        {/* {this.props.contacts.filter === 0 ? (
+        {this.props.contacts.filter.length === 0 ? (
           <Contacts contacts={this.props.contacts.items} />
         ) : (
           <FilteredContacts
             contacts={this.props.contacts.items}
             filter={this.props.contacts.filter}
           />
-        )} */}
+        )}
       </>
     );
   }
@@ -101,6 +100,7 @@ const mapStateToProps = (state) => ({ contacts: state });
 const mapDispatchToProps = (dispatch) => ({
   addContact: (contact) => dispatch(actions.addContact(contact)),
   updateContacts: (contacts) => dispatch(actions.updateSessionContact(contacts)),
+  filterContacts: (contacts) => dispatch(actions.filteredContact(contacts)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Phonebook);

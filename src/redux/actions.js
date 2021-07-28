@@ -12,3 +12,8 @@ export const updateSessionContact = (contacts) => ({
   type: 'phonebook/UpdateContacts',
   payload: contacts,
 });
+
+export const filteredContact = (contacts) => ({
+  type: 'phonebook/FilteredContact',
+  payload: contacts,
+});

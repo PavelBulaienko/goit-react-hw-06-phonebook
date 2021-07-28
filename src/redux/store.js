@@ -13,11 +13,16 @@ const contacts = {
 const reducer = (state = contacts, { type, payload }) => {
   switch (type) {
     case 'phonebook/AddContact':
-      return [...state.items, payload];
+      return { items: [...state.items, payload], filter: state.filter };
     case 'phonebook/DeleteContact':
-      return [...state.items.filter((contact) => contact.id !== payload)];
+      return {
+        items: [...state.items.filter((contact) => contact.id !== payload)],
+        filter: state.filter,
+      };
     case 'phonebook/UpdateContacts':
-      return payload;
+      return { items: payload, filter: state.filter };
+    case 'phonebook/FilteredContact':
+      return { items: state.items, filter: payload };
     default:
       return state;
   }

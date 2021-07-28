@@ -2,7 +2,7 @@ import { React } from 'react';
 
 const FilteredContacts = ({ contacts, filter }) => (
   <ul className="nameList">
-    {/* {filter.map((contactName) => {
+    {filter.map((contactName) => {
       const { id, name, number } = contacts.find((contact) => contact.name === contactName);
 
       return (
@@ -12,7 +12,7 @@ const FilteredContacts = ({ contacts, filter }) => (
           </p>
         </li>
       );
-    })} */}
+    })}
   </ul>
 );
 
