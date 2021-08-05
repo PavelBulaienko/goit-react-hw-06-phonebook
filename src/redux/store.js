@@ -1,4 +1,22 @@
-import { createStore } from 'redux';
+import { configureStore, getDefaultMiddleware, createReducer } from '@reduxjs/toolkit';
+import logger from 'redux-logger';
+import * as actions from './actions';
+import {
+  // persistStore,
+  // persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+// import storage from 'redux-persist/lib/storage';
+
+// const persistConfig = {
+//   key: 'contactList',
+//   storage,
+// };
 
 const contacts = {
   items: [
@@ -10,24 +28,39 @@ const contacts = {
   filter: [],
 };
 
-const reducer = (state = contacts, { type, payload }) => {
-  switch (type) {
-    case 'phonebook/AddContact':
-      return { items: [...state.items, payload], filter: state.filter };
-    case 'phonebook/DeleteContact':
-      return {
-        items: [...state.items.filter((contact) => contact.id !== payload)],
-        filter: state.filter,
-      };
-    case 'phonebook/UpdateContacts':
-      return { items: payload, filter: state.filter };
-    case 'phonebook/FilteredContact':
-      return { items: state.items, filter: payload };
-    default:
-      return state;
-  }
-};
+const reducer = createReducer(contacts, {
+  [actions.addContact]: ({ items, filter }, { payload }) => {
+    return { items: [...items, payload], filter: filter };
+  },
+  [actions.deleteContact]: ({ items, filter }, { payload }) => {
+    return {
+      items: [...items.filter((contact) => contact.id !== payload)],
+      filter: filter,
+    };
+  },
+  [actions.updateSessionContact]: ({ filter }, { payload }) => {
+    return { items: payload, filter: filter };
+  },
+  [actions.filteredContact]: ({ items }, { payload }) => {
+    return { items: items, filter: payload };
+  },
+});
 
-const store = createStore(reducer);
+const middleware = [
+  ...getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }),
+  logger,
+];
+
+const store = configureStore({
+  reducer,
+  middleware,
+  devTools: process.env.NODE_ENV === 'development',
+});
+
+// const persistor = persistStore(store);
 
 export default store;

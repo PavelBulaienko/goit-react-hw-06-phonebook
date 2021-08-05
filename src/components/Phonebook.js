@@ -11,16 +11,6 @@ class Phonebook extends Component {
     number: '',
   };
 
-  componentDidMount() {
-    localStorage.getItem('contacts') &&
-      this.props.updateContacts(JSON.parse(localStorage.getItem('contacts')));
-  }
-
-  componentDidUpdate() {
-    this.props.contacts.items &&
-      localStorage.setItem('contacts', JSON.stringify(this.props.contacts.items));
-  }
-
   handleInputName = (e) => {
     this.setState({ name: e.target.value });
   };

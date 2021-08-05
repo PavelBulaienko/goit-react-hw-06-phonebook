@@ -1,19 +1,9 @@
-export const addContact = (newContact) => ({
-  type: 'phonebook/AddContact',
-  payload: newContact,
-});
+import { createAction } from '@reduxjs/toolkit';
 
-export const deleteContact = (contactId) => ({
-  type: 'phonebook/DeleteContact',
-  payload: contactId,
-});
+export const addContact = createAction('phonebook/AddContact');
 
-export const updateSessionContact = (contacts) => ({
-  type: 'phonebook/UpdateContacts',
-  payload: contacts,
-});
+export const deleteContact = createAction('phonebook/DeleteContact');
 
-export const filteredContact = (contacts) => ({
-  type: 'phonebook/FilteredContact',
-  payload: contacts,
-});
+export const updateSessionContact = createAction('phonebook/UpdateContacts');
+
+export const filteredContact = createAction('phonebook/FilteredContact');
